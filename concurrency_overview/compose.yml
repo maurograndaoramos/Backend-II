@@ -1,5 +1,4 @@
 # docker-compose.yml
-version: "3.8"
 services:
   api:
     build:
@@ -15,7 +14,7 @@ services:
     image: mongo:latest
     ports:
       - "27017:27017"
-  worker:
+  importer:
     build:
       context: .
       dockerfile: Dockerfile
@@ -24,7 +23,18 @@ services:
       - mongodb
     environment:
       MONGO_URI: mongodb://mongodb:27017
-    command: typer data_pipeline.worker process
+    command: poetry run typer importer.run fetch
+
+  processor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+      - mongodb
+    environment:
+      MONGO_URI: mongodb://mongodb:27017
+    command: poetry run typer importer.run process
   exporter:
     build:
       context: .
@@ -34,4 +44,4 @@ services:
       - mongodb
     environment:
       MONGO_URI: mongodb://mongodb:27017
-    command: typer data_pipeline.worker export
+    command: poetry run typer exporter.run export

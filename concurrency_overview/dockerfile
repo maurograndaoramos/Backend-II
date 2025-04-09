@@ -9,4 +9,4 @@ RUN pip install poetry && poetry install --no-root --no-interaction --no-ansi
 
 COPY . .
 
-CMD ["uvicorn", "data_pipeline.api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.api.run:api", "--host", "0.0.0.0", "--port", "8000"]
