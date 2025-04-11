@@ -1,12 +1,13 @@
 import os
-from pydantic import BaseSettings
-from utils import SingletonMeta
+from shared.utils import singleton
+from pydantic_settings import BaseSettings
 
 
-class Settings(BaseSettings, metaclass=SingletonMeta):
+@singleton
+class Settings(BaseSettings):
     """Base settings for the application based on envrionment variables with default values"""
 
-    mongoUri: str = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+    mongoUri: str = os.getenv("MONGO_URI", "mongodb://admin:admin@mongodb:27017")
     mongoDatabase: str = os.getenv("MONGO_DATABASE", "concurrency_overview")
 
     fakerApiQuantity: int = int(os.getenv("FAKER_API_QUANTITY", "1000"))

@@ -1,47 +1,36 @@
-# docker-compose.yml
 services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
+    command: poetry run uvicorn src.api.run:api --host 0.0.0.0 --port 8000 --reload --workers 10
+    volumes:
+      - .:/app
     ports:
       - "8000:8000"
     depends_on:
       - mongodb
-    environment:
-      MONGO_URI: mongodb://mongodb:27017
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
   mongodb:
     image: mongo:latest
     ports:
-      - "27017:27017"
-  importer:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      - api
-      - mongodb
+      - 27017:27017
     environment:
-      MONGO_URI: mongodb://mongodb:27017
-    command: poetry run typer importer.run fetch
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
 
-  processor:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  mongo-express:
+    image: mongo-express:latest
     depends_on:
-      - api
       - mongodb
+    ports:
+      - 8081:8081
     environment:
-      MONGO_URI: mongodb://mongodb:27017
-    command: poetry run typer importer.run process
-  exporter:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      - api
-      - mongodb
-    environment:
-      MONGO_URI: mongodb://mongodb:27017
-    command: poetry run typer exporter.run export
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongodb:27017
+      ME_CONFIG_BASICAUTH: false
