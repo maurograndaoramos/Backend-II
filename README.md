@@ -883,17 +883,16 @@ To achieve the objective and meet the project goal, the following requirements m
 
 Your project will be evaluated based on the quality of what you deliver and how well it meets the objectives. Below is a checklist of everything that must be completed and what we’ll be looking for:
 
-1. **Source Code** (3 points)
+1. **Source Code** (4 points)
    - Clean, modular, and well-documented Python code.
    - Hosted on GitHub/GitLab with a clear structure and meaningful commit messages (following conventional commits).
    - A Git tag must be created before the final class session at 23h59 (Lisbon time).
    - You must also upload a zip file of your project to the shared Google Drive folder.
 
-2. **Backend Application** (4 points)
+2. **Backend Application** (2 points)
    - Built with **FastAPI**, **Django**, or a **CLI-based solution**.
-   - Fully working integration with **Crew AI**, demonstrating real use of AI agents.
-
-3. **AI Agent Integration** (3 points)
+ 
+3. **AI Agent Integration** (4 points)
    - At least one AI agent using **Crew AI**.
    - Clear interface between your backend and the agent(s).
    - Agents should perform useful tasks (e.g. analysis, automation, recommendations).
