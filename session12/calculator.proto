@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package calculator;
+
+// The service definition.
+service Calculator {
+  // Sends a number and returns its cube.
+  rpc Cube (NumberRequest) returns (NumberResponse) {}
+}
+
+// The request message containing the number.
+message NumberRequest {
+  int32 number = 1;
+}
+
+// The response message containing the cubed number.
+message NumberResponse {
+  int32 result = 1;
+}

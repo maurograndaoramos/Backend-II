@@ -1,43 +1,36 @@
-from abc import ABC, abstractmethod
-
-def paypal_payment():
-    return {"message": "Processing PayPal payment"}
-def gpay_payment():
-    return {"message": "Processing Google Wallet payment"}
-def applepay_payment():
-    return {"message": "Processing Apple Pay payment"}
-def mbway_payment():
-    return {"message": "Processing MB Way payment"}
+from abc import ABC
 
 class PaymentService(ABC):
-    @abstractmethod
-    def process(*args, **kwargs) -> str:
+    def process(*arg, **kwargs):
         return NotImplemented
 
-class PaypalService(PaymentService):
-    def process(self, *args, **kwargs) -> str:
-        return paypal_payment()
-    
-class ApplePayService(PaymentService):
-    def process(self, *args, **kwargs) -> str:
-        return applepay_payment()
-    
-class MbwayService(PaymentService):
-    def process(self, *args, **kwargs) -> str:
-        return mbway_payment()
-    
-class GpayService(PaymentService):
-    def process(self, *args, **kwargs) -> str:
-        return gpay_payment()
+class PayPalService(PaymentService):
+    def process(*arg, **kwargs):
+        return "Paypal"
+        # ...
+        # return super().process(**kwargs)
 
+class ApplePayService(PaymentService):
+    def process(*arg, **kwargs):
+        return "ApplePay"
+        # ...
+        # return super().process(**kwargs)
+
+class GPayService(PaymentService):
+
+    def process(*arg, **kwargs):
+        return super().process(**kwargs)
+    
+class MbService(PaymentService):
+
+    def process(*arg, **kwargs):
+        return super().process(**kwargs)
+    
 class PaymentGateway:
     registry = {
-        "paypal": PaypalService,
-        "gpay": gpay_payment,
-        "applepay": ApplePayService,
-        "mbway": mbway_payment
+        "paypal":PayPalService,
+        "applepay":ApplePayService,
     }
-
     @classmethod
-    def build (cls, method: str) -> PaymentService:
+    def build(cls, method:str)-> PaymentService:
         return cls.registry.get(method, None)()
